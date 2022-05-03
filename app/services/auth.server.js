@@ -1,4 +1,4 @@
-import { createCookieSessionStorage, redirect } from "remix";
+import { createCookieSessionStorage, redirect } from "@remix-run/node";
 import { APP_NAME, SECRET } from "../config";
 import UserModel from "../db/models/user.server";
 import { isUserOnboarded } from "./onboarding";

@@ -1,5 +1,5 @@
-import { redirect } from "remix";
-import { destroySession, getSession } from "../services/auth.server";
+import { redirect } from "@remix-run/node";
+import { destroySession, getSession } from "../../services/auth.server";
 
 export const action = async ({ request }) => {
   const session = await getSession(request.headers.get("Cookie"));

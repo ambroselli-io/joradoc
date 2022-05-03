@@ -1,4 +1,4 @@
-import { useSearchParams, redirect } from "remix";
+import { useSearchParams, redirect } from "@remix-run/node";
 import UserModel from "../../db/models/user.server";
 import { createMagicLinkEmail } from "../../services/magic-link";
 import { sendEmail } from "../../services/sendEmail";

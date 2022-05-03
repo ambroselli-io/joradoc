@@ -1,4 +1,5 @@
-import { Link, useLoaderData } from "remix";
+import { Link } from "@remix-run/react";
+import { useLoaderData } from "@remix-run/node";
 import { createUserSession } from "../../services/auth.server";
 import UserModel from "../../db/models/user.server";
 import { validateMagicLink } from "../../services/magic-link";

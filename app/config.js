@@ -1,4 +1,5 @@
 const MONGO_URL = process.env.MONGODB_ADDON_URI;
+const MONGODB_DB_NAME = "my app";
 const APP_URL = process.env.APP_URL;
 const APP_NAME = "";
 const PORT = process.env.PORT || 8080;
@@ -28,4 +29,5 @@ export {
   CELLAR_ADDON_KEY_ID,
   CELLAR_ADDON_KEY_SECRET,
   PUBLIC_BUCKET_NAME,
+  MONGODB_DB_NAME,
 };
