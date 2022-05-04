@@ -20,6 +20,8 @@ const Schema = new mongoose.Schema(
   { timestamps: true }
 );
 
+Schema.index({ name: "text" });
+
 Schema.methods.me = function () {
   return {
     _id: this._id,
@@ -30,4 +32,7 @@ Schema.methods.me = function () {
 };
 
 const UserModel = dbConnection.models[MODELNAME] || dbConnection.model(MODELNAME, Schema);
+
+UserModel.syncIndexes();
+
 export default UserModel;
