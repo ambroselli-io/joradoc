@@ -33,6 +33,15 @@ Schema.methods.me = function () {
 
 const UserModel = dbConnection.models[MODELNAME] || dbConnection.model(MODELNAME, Schema);
 
-UserModel.syncIndexes();
+if (process.env.NODE_ENV === "production") {
+  Schema.index({ name: "text" });
+  UserModel.syncIndexes();
+} else {
+  // if (!global.__syncIndexes.includes(MODELNAME)) {
+  //   global.__syncIndexes.push(MODELNAME);
+  //   Schema.index({ name: "text" });
+  //   UserModel.syncIndexes();
+  // }
+}
 
 export default UserModel;

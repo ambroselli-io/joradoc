@@ -68,3 +68,26 @@ h6 {
 #__next {
   isolation: isolate;
 }
+
+/*
+Get range input at the same color
+*/
+
+-webkit-slider-runnable-track,
+-moz-range-track,
+-ms-track {
+  color: currentColor;
+}
+
+/*
+Dialog
+*/
+
+dialog::backdrop {
+  background: rgba(0, 0, 0, 0.5);
+}
+dialog {
+  margin: auto;
+  max-height: calc((100% - 6px) - 2em);
+  z-index: 10000;
+}

@@ -78,6 +78,7 @@ P.S. Si vous n'avez pas demandé à recevoir cet email, vous pouvez l'ignorer.
     .split("{APP_URL}")
     .join(APP_URL)
     .replace("{MAGIC_LINK}", magicLink)
+    .replace("{MAGIC_LINK}", magicLink)
     .replace("{BUTTON_CAPTION}", userExists ? "Se connecter" : "Créer mon compte")
     .replace(
       "{WELCOME_MESSAGE}",
