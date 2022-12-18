@@ -16,7 +16,7 @@ import resetStyles from "./styles/reset.css";
 import fontFace from "./styles/font.css";
 import smoothscroll from "smoothscroll-polyfill";
 import dialogPolyfillCSS from "dialog-polyfill/dist/dialog-polyfill.css";
-import { APP_DESCRIPTION, APP_NAME } from "./services/appName";
+import { APP_DESCRIPTION, APP_NAME, APP_URL } from "./services/appName";
 import resolveConfig from "tailwindcss/resolveConfig";
 import tailwindConfig from "../tailwind.config.js";
 const fullConfig = resolveConfig(tailwindConfig);
@@ -39,11 +39,10 @@ export const meta = () => ({
   "og:description": APP_DESCRIPTION,
   "twitter:title": `${APP_NAME}`,
   "twitter:description": APP_DESCRIPTION,
-  "og:url": {APP_URL},
-  canonical: {APP_URL},
+  "og:url": { APP_URL },
+  canonical: { APP_URL },
   "og:image": "/assets/icons/og-image-1200-630.png",
-  "og:image:secure_url":
-    `${APP_URL}/assets/icons/og-image-1200-630.png`,
+  "og:image:secure_url": `${APP_URL}/assets/icons/og-image-1200-630.png`,
   "twitter:image": "/assets/icons/og-image-1200-630.png",
   "og:image:type": "image/png",
   "og:image:width": "1200",
