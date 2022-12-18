@@ -39,31 +39,31 @@
     "@remix-run/react": "*",
     "@remix-run/serve": "*",
     "@sentry/remix": "*",
-    "aws-sdk": "^2.1126.0",
-    "dayjs": "^1.11.1",
-    "dialog-polyfill": "^0.5.6
-    "mongoose": "^6.3.1",
-    "react": "^17.0.2",
-    "react-dom": "^17.0.2",
+    "aws-sdk": "*",
+    "dayjs": "*",
+    "dialog-polyfill": "*",
+    "mongoose": "*",
+    "react": "*",
+    "react-dom": "*",
     "remix": "*",
-    "smoothscroll-polyfill": "^0.4.4"
+    "smoothscroll-polyfill": "*"
   },
   "devDependencies": {
     "@remix-run/dev": "*",
     "@remix-run/eslint-config": "*",
     "@sentry/cli": "*",
     "@tailwindcss/line-clamp": "*",
-    "autoprefixer": "^10.4.7",
-    "concurrently": "^7.1.0",
-    "cross-env": "^7.0.3",
-    "dotenv": "^15.0.0",
+    "autoprefixer": "*",
+    "concurrently": "*",
+    "cross-env": "*",
+    "dotenv": "*",
     "eslint": "*",
-    "eslint-config-prettier": "^8.5.0",
-    "npm-run-all": "^4.1.5",
-    "postcss": "^8.4.13",
-    "prettier": "^2.6.0",
-    "prettier-plugin-tailwindcss": "^0.1.8",
-    "tailwindcss": "^3.0.24"
+    "eslint-config-prettier": "*",
+    "npm-run-all": "*",
+    "postcss": "*",
+    "prettier": "*",
+    "prettier-plugin-tailwindcss": "*",
+    "tailwindcss": "*"
   },
   "engines": {
     "node": ">=14"
