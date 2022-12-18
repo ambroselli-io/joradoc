@@ -1,10 +1,13 @@
 import fs from "fs";
 import path from "path";
-import { APP_URL, APP_NAME } from "../config";
-import { decrypt, encrypt } from "./crypto";
+import crypto from "crypto";
+import { APP_NAME, APP_URL, SECRET } from "app/config";
+import resolveConfig from "tailwindcss/resolveConfig";
+import tailwindConfig from "../../tailwind.config";
+const fullConfig = resolveConfig(tailwindConfig);
 
 const linkExpirationTime = 1000 * 60 * 30;
-const magicLinkSearchParam = "kodyKey";
+const magicLinkSearchParam = "ambrosIo";
 
 export const validateMagicLink = (link) => {
   const url = new URL(link);
@@ -79,18 +82,47 @@ P.S. Si vous n'avez pas demandé à recevoir cet email, vous pouvez l'ignorer.
     .join(APP_URL)
     .replace("{MAGIC_LINK}", magicLink)
     .replace("{MAGIC_LINK}", magicLink)
+    .replace("{APP_COLOR}", fullConfig.theme.colors.app)
     .replace("{BUTTON_CAPTION}", userExists ? "Se connecter" : "Créer mon compte")
     .replace(
       "{WELCOME_MESSAGE}",
       userExists
-        ? `Bonjour ${user.firstName} ! Heureux de vous revoir sur ${APP_NAME}!`
+        ? `Bonjour ${
+            user?.firstName ? `${user?.firstName} !` : "!"
+          } Heureux de vous revoir sur ${APP_NAME}!`
         : `Bienvenue sur ${APP_NAME} !`
     );
 
   return {
     emails: [emailAddress],
-    subject: `Voici votre lien de connection vers ${APP_NAME} 🩺`,
+    subject: `Voici votre lien de connection vers ${APP_NAME}`,
     text,
     html,
   };
+};
+
+const algorithm = "aes-256-ctr";
+
+const ENCRYPTION_KEY = crypto.scryptSync(SECRET, "salt", 32);
+
+const IV_LENGTH = 16;
+
+const encrypt = (text) => {
+  const iv = crypto.randomBytes(IV_LENGTH);
+  const cipher = crypto.createCipheriv(algorithm, ENCRYPTION_KEY, iv);
+  const encrypted = Buffer.concat([cipher.update(text), cipher.final()]);
+  return `${iv.toString("hex")}:${encrypted.toString("hex")}`;
+};
+
+const decrypt = (text) => {
+  const [ivPart, encryptedPart] = text.split(":");
+  if (!ivPart || !encryptedPart) {
+    throw new Error("Invalid text.");
+  }
+
+  const iv = Buffer.from(ivPart, "hex");
+  const encryptedText = Buffer.from(encryptedPart, "hex");
+  const decipher = crypto.createDecipheriv(algorithm, ENCRYPTION_KEY, iv);
+  const decrypted = Buffer.concat([decipher.update(encryptedText), decipher.final()]);
+  return decrypted.toString();
 };

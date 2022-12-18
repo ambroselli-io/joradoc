@@ -16,6 +16,7 @@ const Input = forwardRef(
       textarea = false,
       notFancy = false,
       onChange = null,
+      saveInCache = true,
       ...props
     },
     refForwarded
@@ -23,7 +24,7 @@ const Input = forwardRef(
     const ref = useShareForwardedRef(refForwarded);
 
     useEffect(() => {
-      if (window.sessionStorage.getItem(id)?.length && !props.disabled) {
+      if (saveInCache && window.sessionStorage.getItem(id)?.length && !props.disabled) {
         ref.current.value = window.sessionStorage.getItem(id);
         onChange?.({ target: ref.current });
       }
@@ -32,15 +33,21 @@ const Input = forwardRef(
 
     const Tag = textarea ? "textarea" : "input";
     return (
-      <div className={`flex w-full flex-col items-start gap-2 ${componentClassName}`}>
-        <label htmlFor={`${name}-${id}`}>
-          {label}
-          {label && required && <Required />}
-        </label>
+      <div
+        className={`flex w-full flex-col items-start ${
+          label ? "gap-2" : ""
+        } ${componentClassName}`}
+      >
+        {label && (
+          <label htmlFor={`${name}-${id}`}>
+            {label}
+            {label && required && <Required />}
+          </label>
+        )}
         <Tag
           type={type}
           ref={ref}
-          id={`${name}-${id}`}
+          id={id ? `${name}-${id}` : name}
           name={name}
           className={`${
             notFancy

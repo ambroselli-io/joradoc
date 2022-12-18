@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { useFetcher, useLocation } from "@remix-run/react";
 import Input from "./Input";
 import Modal from "./Modal";
+import useSetDocumentTitle from "app/services/useSetDocumentTitle";
 
 const ContactUs = ({ isOpen, hide, user = null }) => {
   const fetcher = useFetcher();
@@ -10,6 +11,8 @@ const ContactUs = ({ isOpen, hide, user = null }) => {
   useEffect(() => {
     if (fetcher.data?.error) alert(fetcher.data.error);
   }, [fetcher.data?.error]);
+
+  useSetDocumentTitle("Contactez-nous | Debator", { isVisible: isOpen });
 
   if (fetcher?.type === "done" && fetcher?.data?.ok === true) {
     return (
@@ -69,7 +72,7 @@ const ContactUs = ({ isOpen, hide, user = null }) => {
           name="description"
           id="contact-us-description"
           label="🎙 Que voulez-vous nous dire ?"
-          placeholder="Une remarque sur le sujet, le défi ou le mode de jeu que vous avez choisi ? Une demande particulière ? Un message de soutien ou une critique ? Allez-y !"
+          placeholder="Une remarque sur le sujet ou le défi que vous avez choisi ? Une demande particulière ? Un message de soutien ou une critique ? Allez-y !"
           required
         />
         <button

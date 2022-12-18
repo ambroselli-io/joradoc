@@ -1,3 +1,4 @@
+/* eslint-disable no-control-regex */
 /*
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -11,7 +12,7 @@
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-var defaultDiacriticsRemovalMap = [
+const defaultDiacriticsRemovalMap = [
   {
     base: "A",
     letters:
@@ -247,7 +248,7 @@ for (let i = 0; i < defaultDiacriticsRemovalMap.length; i++) {
 }
 
 // "what?" version ... http://jsperf.com/diacritics/12
-const removeDiacritics = (str) =>
+export const removeDiacritics = (str) =>
   str.replace(/[^\u0000-\u007E]/g, (a) => diacriticsMap[a] || a);
 
 export const normalizeWord = (word) => {
@@ -257,7 +258,7 @@ export const normalizeWord = (word) => {
       .replace(/[^\w]/g, "");
     return normalizedWord;
   } catch (e) {
-    console.log("cannot normalize word", word);
+    console.error("cannot normalize word", word);
     return "";
   }
 };

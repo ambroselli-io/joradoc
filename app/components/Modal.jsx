@@ -1,8 +1,9 @@
 import { useEffect, useRef } from "react";
 import { useNavigate } from "@remix-run/react";
+import { createPortal } from "react-dom";
 // https://css-tricks.com/prevent-page-scrolling-when-a-modal-is-open/
 
-const Modal = ({ title, children, isOpen = true, hide = null }) => {
+const ModalContent = ({ title, children, isOpen = true, hide = null }) => {
   const navigate = useNavigate();
   const dialogRef = useRef(null);
   const currentOverflow = useRef(null);
@@ -14,6 +15,9 @@ const Modal = ({ title, children, isOpen = true, hide = null }) => {
         dialogRef.current?.showModal();
         currentOverflow.current = document.body.style.overflow;
         document.body.style.overflow = "hidden";
+        setTimeout(() => {
+          dialogRef.current?.scrollTo(0, 0);
+        }, 100);
       });
     }
   }, [isOpen]);
@@ -21,7 +25,7 @@ const Modal = ({ title, children, isOpen = true, hide = null }) => {
   const onCancel = () => {
     document.body.style.overflow = currentOverflow.current;
     // clear inputs storage
-    window.sessionStorage.clear();
+    if (typeof window !== "undefined") window.sessionStorage.clear();
     if (!hide) return navigate(-1);
     hide(false); // for setShowModal(false)
     try {
@@ -35,7 +39,7 @@ const Modal = ({ title, children, isOpen = true, hide = null }) => {
   const onClose = () => {
     // clear inputs storage
     // not working...
-    window.sessionStorage.clear();
+    if (typeof window !== "undefined") window.sessionStorage.clear();
   };
 
   return (
@@ -43,10 +47,14 @@ const Modal = ({ title, children, isOpen = true, hide = null }) => {
       onCancel={onCancel}
       onClose={onClose}
       ref={dialogRef}
-      className="fixed !inset-0 flex w-[90vw] max-w-[68ch] !transform-none flex-col items-center justify-start overflow-y-scroll rounded bg-white !p-0"
+      className="fixed !inset-0 z-50 flex w-[90vw] max-w-prose !transform-none flex-col items-center justify-start overflow-y-scroll rounded bg-white !p-0"
     >
       <div className="w-full p-4 pt-20">{children}</div>
-      <h4 className="absolute top-0 left-0 flex w-full justify-between bg-white p-4 pb-5 text-xl font-bold">
+      <h4
+        className={`absolute top-0 left-0 flex w-full bg-white p-4 pb-5 text-xl font-bold ${
+          title ? "justify-between" : "justify-end"
+        }`}
+      >
         {title}
         <button
           type="button"
@@ -56,6 +64,13 @@ const Modal = ({ title, children, isOpen = true, hide = null }) => {
       </h4>
     </dialog>
   );
+};
+
+const Modal = (props) => {
+  if (typeof document !== "undefined") {
+    return createPortal(<ModalContent {...props} />, document.body);
+  }
+  return <ModalContent {...props} />;
 };
 
 export default Modal;

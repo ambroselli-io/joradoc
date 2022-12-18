@@ -173,4 +173,99 @@ const Select = ({
   );
 };
 
-export { SelectAutofill, Select };
+const transparentTheme = (theme) => ({
+  ...theme,
+  borderRadius: 0,
+  borderWidth: 0,
+});
+
+const transparentCustomStyles = (control = {}) => ({
+  placeholder: (provided, state) => ({
+    ...provided,
+    color: "#9ca3af",
+    textAlign: "left",
+  }),
+  control: (provided, state) => ({
+    ...provided,
+    borderWidth: 0,
+    backgroundColor: "transparent",
+    ...control,
+  }),
+  option: (provided, state) => ({
+    ...provided,
+    textAlign: "left",
+    padding: "0 0.5rem",
+  }),
+  valueContainer: (provided, state) => ({
+    ...provided,
+    padding: 0,
+    textAlign: "left",
+  }),
+  indicatorSeparator: (provided, state) => ({
+    ...provided,
+    display: "none",
+  }),
+  indicatorContainer: (provided, state) => ({
+    ...provided,
+    display: "none",
+  }),
+  input: (provided, state) => ({
+    ...provided,
+    margin: 0,
+    padding: 0,
+    backgroundColor: "transparent",
+    textAlign: "left",
+  }),
+  menuList: (provided, state) => {
+    if (state.selectProps.options.length === 0) {
+      return {
+        ...provided,
+        display: "none",
+      };
+    }
+    return {
+      ...provided,
+      padding: 0,
+    };
+  },
+  noOptionsMessage: (provided, state) => ({
+    ...provided,
+    display: "none",
+  }),
+});
+
+const TransparentSelect = ({
+  name,
+  options,
+  defaultValue,
+  onChange,
+  form,
+  isCreatable,
+  customStyles,
+  ...props
+}) => {
+  const Component = isCreatable ? CreatableSelect : ReactSelect;
+  return (
+    <ClientOnly>
+      {() => (
+        <Component
+          defaultValue={defaultValue}
+          instanceId={`react-select-${name}`}
+          name={name}
+          form={form}
+          options={options}
+          onChange={onChange}
+          className="w-full"
+          classNamePrefix="select"
+          theme={transparentTheme}
+          placeholder="Écrire ici..."
+          styles={transparentCustomStyles(customStyles)}
+          formatCreateLabel={(inputValue) => capitalizeFirstLetter(inputValue)}
+          {...props}
+        />
+      )}
+    </ClientOnly>
+  );
+};
+
+export { SelectAutofill, Select, SelectRoot, TransparentSelect };

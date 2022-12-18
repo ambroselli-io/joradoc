@@ -1,6 +1,18 @@
 import { useEffect, useRef, useState } from "react";
 import { useSearchParams, useTransition } from "@remix-run/react";
 
+export const mergeSearchParam = (
+  newParams = [],
+  searchParams = new URLSearchParams()
+) => {
+  for (const { param, value, action = "merge" } of newParams) {
+    searchParams = new URLSearchParams(searchParams);
+    if (action === "merge") searchParams.set(param, value);
+    if (action === "delete") searchParams.delete(param);
+  }
+  return searchParams;
+};
+
 /*
 useMergeSearchParams
 as in `[searchParams, mergeSearchParams] = useMergeSearchParams()`
@@ -13,19 +25,19 @@ mergeSearchParams({ neParam: 'whatever' }) merges the newParam within the existi
 export const useMergeSearchParams = () => {
   const [searchParams, setSearchParams] = useSearchParams();
 
-  const mergeSearchParams = (newParams) => {
+  const mergeSearchParams = (newParams, navigateOptions = {}) => {
     const searchParamsObject = {};
     for (const [key, param] of searchParams.entries()) {
       searchParamsObject[key] = param;
     }
     for (const [key, param] of Object.entries(newParams)) {
-      if (!param) delete searchParamsObject[key];
+      if (param == null) delete searchParamsObject[key]; // check null or undefined
       else searchParamsObject[key] = param;
     }
-    setSearchParams(searchParamsObject);
+    setSearchParams(searchParamsObject, navigateOptions);
   };
 
-  return [searchParams, mergeSearchParams];
+  return mergeSearchParams;
 };
 
 /*

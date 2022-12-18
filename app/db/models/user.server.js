@@ -12,6 +12,7 @@ const Schema = new mongoose.Schema(
       unique: true,
       required: "Email address is required",
       match: [/^.+@(?:[\w-]+\.)+\w+$/, "Please fill a valid email address"],
+      sparse: true,
     },
     name: { type: String, index: "text" },
     job: { type: String },
@@ -19,8 +20,6 @@ const Schema = new mongoose.Schema(
   },
   { timestamps: true }
 );
-
-Schema.index({ name: "text" });
 
 Schema.methods.me = function () {
   return {
@@ -37,11 +36,12 @@ if (process.env.NODE_ENV === "production") {
   Schema.index({ name: "text" });
   UserModel.syncIndexes();
 } else {
-  // if (!global.__syncIndexes.includes(MODELNAME)) {
-  //   global.__syncIndexes.push(MODELNAME);
-  //   Schema.index({ name: "text" });
-  //   UserModel.syncIndexes();
-  // }
+  // global.__syncIndexes = global.__syncIndexes.filter((i) => i !== MODELNAME);
+  if (!global.__syncIndexes.includes(MODELNAME)) {
+    global.__syncIndexes.push(MODELNAME);
+    Schema.index({ name: "text" });
+    UserModel.syncIndexes();
+  }
 }
 
 export default UserModel;

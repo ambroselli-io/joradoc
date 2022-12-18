@@ -7,10 +7,11 @@ const SearchInput = ({
   name = "search",
   id = "search",
   className = "",
+  labelClassName = "sr-only",
 }) => {
   return (
-    <div className="flex w-full items-center">
-      <label htmlFor={`${name}-${id}`} className="sr-only">
+    <div className="flex w-full flex-col items-center">
+      <label htmlFor={`${name}-${id}`} className={labelClassName}>
         {label}
       </label>
       <div className={`relative w-full ${className}`}>

@@ -1,17 +1,9 @@
-import * as Sentry from "@sentry/node";
-import { SENTRY_XXX, ENVIRONMENT } from "app/config";
-
-if (process.env.NODE_ENV === "production") {
-  Sentry.init({
-    dsn: SENTRY_XXX,
-    environment: `api-${ENVIRONMENT}`,
-  });
-}
+import * as Sentry from "@sentry/remix";
+import { ENVIRONMENT } from "app/config";
 
 // https://docs.sentry.io/platforms/javascript/enriching-events/context/#example-usages
 
 export const capture = (err, context = {}) => {
-  console.log("SENTRYYYYYYY", process.env.NODE_ENV);
   if (typeof context === "string") {
     context = JSON.parse(context);
   } else {

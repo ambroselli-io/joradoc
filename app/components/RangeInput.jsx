@@ -10,6 +10,7 @@ const RangeInput = ({
   required = false,
   disabled = false,
   defaultValue = undefined,
+  ...props
 }) => {
   const [searchParams] = useSearchParams();
   const options = useMemo(() => Array.from(Array(max - min).keys()), [min, max]);
@@ -26,6 +27,7 @@ const RangeInput = ({
         className={className}
         required={required}
         disabled={disabled}
+        {...props}
       />
       <datalist id="stars">
         {options.map((_, index) => (

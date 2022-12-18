@@ -10,6 +10,9 @@ module.exports = {
       marker: ["Permanent Marker", ...theme.fontFamily.sans],
     },
     extend: {
+      screen: {
+        retina: "300dpi",
+      },
       colors: {
         app: "#03bfc6",
       },
@@ -32,5 +35,11 @@ module.exports = {
     },
   },
   variants: {},
-  plugins: [require("@tailwindcss/line-clamp")],
+  plugins: [
+    require("@tailwindcss/line-clamp"),
+    function ({ addVariant }) {
+      addVariant("child", "& > *");
+      addVariant("child-hover", "& > *:hover");
+    },
+  ],
 };

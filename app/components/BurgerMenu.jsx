@@ -1,8 +1,25 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 
-const BurgerMenu = ({ children, duration = 150 }) => {
+const BurgerMenu = ({ children, duration = 150, color = "app" }) => {
   const [activateMenu, setActivateMenu] = useState(false);
   const [showMenu, setShowMenu] = useState(false);
+
+  const menuRef = useRef();
+  useEffect(() => {
+    function handleClickOutsideBox(event) {
+      if (!activateMenu) return;
+      if (!menuRef.current.contains(event.target)) {
+        setActivateMenu(false);
+      }
+    }
+
+    document.addEventListener("mousedown", handleClickOutsideBox);
+    document.addEventListener("touchstart", handleClickOutsideBox);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutsideBox);
+      document.removeEventListener("touchstart", handleClickOutsideBox);
+    };
+  }, [activateMenu]);
 
   useEffect(() => {
     if (activateMenu) {
@@ -10,6 +27,7 @@ const BurgerMenu = ({ children, duration = 150 }) => {
     } else {
       setTimeout(() => {
         setShowMenu(false);
+        setActivateMenu(false);
       }, duration + 10);
     }
   }, [activateMenu, duration]);
@@ -28,11 +46,15 @@ const BurgerMenu = ({ children, duration = 150 }) => {
   return (
     <>
       <button
-        className={`relative z-20 h-10 w-10 shrink-0 text-app ${
+        className={`relative z-20 h-10 w-10 shrink-0 text-${color} ${
           showMenu ? "opacity-50" : ""
         }`}
         onClick={() => {
-          setActivateMenu((s) => !s);
+          if (showMenu) {
+            setActivateMenu(false);
+          } else {
+            setActivateMenu(true);
+          }
         }}
       >
         <span className="sr-only">Ouvrir le menu</span>
@@ -58,8 +80,11 @@ const BurgerMenu = ({ children, duration = 150 }) => {
         </div>
       </button>
       <nav
-        className={`max-w-screen absolute top-0 right-0 z-10 flex h-screen w-80 max-w-full flex-col border-l border-app border-opacity-30 bg-[#fafbfe] pt-12 transition-all duration-${duration} ${className}`}
-        onClick={() => setActivateMenu((s) => !s)}
+        className={`max-w-screen absolute top-0 right-0 z-10 flex h-screen w-80 max-w-full flex-col overflow-y-auto border-l border-app border-opacity-30 bg-[#fafbfe] pt-12 transition-all duration-${duration} ${className}`}
+        onClick={() => {
+          setActivateMenu((s) => !s);
+        }}
+        ref={menuRef}
       >
         {children}
       </nav>
