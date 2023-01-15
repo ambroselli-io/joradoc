@@ -14,7 +14,6 @@
     "dev:css": "tailwindcss -o ./app/styles/tailwind.css --watch",
     "generate:css": "tailwindcss -o ./app/styles/tailwind.css",
     "lint": "eslint --cache --cache-location ./node_modules/.cache/eslint .",
-    "postinstall": "npx patch-package",
     "start": "remix-serve build",
     "clean-build-and-cache": "rm -rf ./.cache && rm -rf ./build && rm -rf ./public/build",
     "clean": "npm run clean-build-and-cache && npm install && npm run postinstall"
