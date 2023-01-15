@@ -1,7 +1,6 @@
 import { createCookieSessionStorage, redirect } from "@remix-run/node";
 import { APP_NAME, SECRET } from "../config";
 import UserModel from "../db/models/user.server";
-import { isUserOnboarded } from "./userUtils.server";
 
 const sessionExpirationTime = 1000 * 60 * 60 * 24 * 365;
 
@@ -30,7 +29,7 @@ export const getUserFromCookie = async (
   const userId = session.get("userId");
   const user = await UserModel.findById(userId);
   if (!user && !noRedirect) throw redirect(redirectTo);
-  if (!isUserOnboarded(user) && !noRedirect) return redirect("/profil");
+  if (!noRedirect) return redirect("/profil");
   return user;
 };
 
@@ -42,7 +41,6 @@ export const createUserSession = async (request, user, redirectTo = "/") => {
   session.set("userId", user._id);
   user.set({ lastLoginAt: Date.now() });
   await user.save();
-  if (!isUserOnboarded(user)) redirectTo = "/profil";
   return redirect(redirectTo, {
     headers: {
       "Set-Cookie": await commitSession(session),
